@@ -1,39 +1,32 @@
 from benchopt import BaseDataset, safe_import_context
 
-
-# Protect the import with `safe_import_context()`. This allows:
-# - skipping import to speed up autocompletion in CLI.
-# - getting requirements info when all dependencies are not installed.
 with safe_import_context() as import_ctx:
-    import numpy as np
+    from skglm.utils.data import make_dummy_survival_data
 
 
-# All datasets must be named `Dataset` and inherit from `BaseDataset`
 class Dataset(BaseDataset):
 
-    # Name to select the dataset in the CLI and to display the results.
     name = "Simulated"
 
-    # List of parameters to generate the datasets. The benchmark will consider
-    # the cross product for each key in the dictionary.
-    # Any parameters 'param' defined here is available as `self.param`.
+    requirements = [
+        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+    ]
+
     parameters = {
         'n_samples, n_features': [
-            (1000, 500),
-            (5000, 200),
-        ],
-        'random_state': [27],
+            (1000, 100),
+            (500, 1000),
+        ]
     }
 
+    def __init__(self, n_samples=100, n_features=30, random_state=1235):
+        self.n_samples = n_samples
+        self.n_features = n_features
+        self.random_state = random_state
+
     def get_data(self):
-        # The return arguments of this function are passed as keyword arguments
-        # to `Objective.set_data`. This defines the benchmark's
-        # API to pass data. It is customizable for each benchmark.
+        tm, s, X = make_dummy_survival_data(
+            self.n_samples, self.n_features, normalize=True,
+            random_state=self.random_state)
 
-        # Generate pseudorandom data using `numpy`.
-        rng = np.random.RandomState(self.random_state)
-        X = rng.randn(self.n_samples, self.n_features)
-        y = rng.randn(self.n_samples)
-
-        # The dictionary defines the keyword arguments for `Objective.set_data`
-        return dict(X=X, y=y)
+        return dict(tm=tm, s=s, X=X)
