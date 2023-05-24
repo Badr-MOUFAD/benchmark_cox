@@ -1,3 +1,4 @@
+import warnings
 from benchopt import BaseSolver, safe_import_context
 
 with safe_import_context() as import_ctx:
@@ -14,13 +15,14 @@ class Solver(BaseSolver):
         "lifelines",
     ]
 
-    stopping_criterion = 'iteration'
+    stopping_strategy = 'iteration'
 
     def set_objective(self, tm, s, X, alpha):
         # format data
         stacked_tm_s_X = np.hstack((tm[:, None], s[:, None], X))
         self.df = pd.DataFrame(stacked_tm_s_X)
 
+        warnings.filterwarnings('ignore')
         self.estimator = CoxPHFitter(penalizer=alpha, l1_ratio=1.)
 
     def run(self, n_iter):

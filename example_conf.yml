@@ -1,0 +1,10 @@
+solver:
+  - skglm
+  - lifelines
+
+dataset:
+  - Simulated
+
+max-runs: 100
+n-jobs: 15
+n-reps: 5

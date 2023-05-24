@@ -15,7 +15,7 @@ class Solver(BaseSolver):
         "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
     ]
 
-    stopping_criterion = 'iteration'
+    stopping_strategy = 'iteration'
 
     def set_objective(self, tm, s, X, alpha):
         self.tm, self.s, self.X = tm, s, X
