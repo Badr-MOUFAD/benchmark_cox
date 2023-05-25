@@ -10,7 +10,7 @@ class Objective(BaseObjective):
     name = "L1 Cox Estimation"
 
     parameters = {
-        'reg': [5*1e-1, 1e-1, 5*1e-2, 1e-2],
+        'reg': [1e-1, 1e-2],
     }
 
     min_benchopt_version = "1.3"

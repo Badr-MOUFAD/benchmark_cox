@@ -14,9 +14,10 @@ class Dataset(BaseDataset):
 
     parameters = {
         'n_samples, n_features': [
-            (500, 500),
+            (200, 100), (500, 300),
+            (1000, 300), (1000, 500)
         ],
-        'normalize': [True, False]
+        'normalize': [True]
     }
 
     def __init__(self, n_samples=100, n_features=30,

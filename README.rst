@@ -7,7 +7,7 @@ This benchmark is dedicated to solver of **L1-Cox estimation**:
 
 
 $$
-\min_{w} \sum_{i=1}^{n} -s_i \langle x_i, \beta \rangle + \log(\textstyle\sum_{y_j \geq y_i} e^{\langle x_j, \beta \rangle}) + \lambda \lVert w \rVert_1
+\\min_{w} \\sum_{i=1}^{n} -s_i \\langle x_i, \\beta \\rangle + \\log(\\textstyle\\sum_{y_j \\geq y_i} e^{\\langle x_j, \\beta \\rangle}) + \\lambda \\lVert w \\rVert_1
 $$
 
 

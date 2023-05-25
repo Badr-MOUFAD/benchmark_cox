@@ -1,5 +1,7 @@
 import warnings
 from benchopt import BaseSolver, safe_import_context
+from benchopt.stopping_criterion import SufficientProgressCriterion
+
 
 with safe_import_context() as import_ctx:
     import pandas as pd
@@ -15,7 +17,9 @@ class Solver(BaseSolver):
         "lifelines",
     ]
 
-    stopping_strategy = 'iteration'
+    stopping_criterion = SufficientProgressCriterion(
+        patience=10, strategy="iteration",
+    )
 
     def set_objective(self, tm, s, X, alpha):
         # format data
@@ -39,3 +43,8 @@ class Solver(BaseSolver):
 
     def get_result(self):
         return self.w
+
+    @staticmethod
+    def get_next(previous):
+        "Linear growth for n_iter."
+        return previous + 1

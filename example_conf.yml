@@ -5,7 +5,6 @@ solver:
 dataset:
   - Simulated
 
-timeout: 60
 max-runs: 100
-n-jobs: 15
-n-repetitions: 5
+n-repetitions: 3
+n-jobs: 18
