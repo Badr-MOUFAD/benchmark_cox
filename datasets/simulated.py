@@ -14,20 +14,21 @@ class Dataset(BaseDataset):
 
     parameters = {
         'n_samples, n_features': [
-            (100, 60),
-            (1000, 100),
-            (500, 1000),
-        ]
+            (500, 500),
+        ],
+        'normalize': [True, False]
     }
 
-    def __init__(self, n_samples=100, n_features=30, random_state=1235):
+    def __init__(self, n_samples=100, n_features=30,
+                 normalize=True, random_state=1235):
         self.n_samples = n_samples
         self.n_features = n_features
         self.random_state = random_state
+        self.normalize = normalize
 
     def get_data(self):
         tm, s, X = make_dummy_survival_data(
-            self.n_samples, self.n_features, normalize=True,
+            self.n_samples, self.n_features, self.normalize,
             random_state=self.random_state)
 
         return dict(tm=tm, s=s, X=X)

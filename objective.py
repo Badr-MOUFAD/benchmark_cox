@@ -10,7 +10,7 @@ class Objective(BaseObjective):
     name = "L1 Cox Estimation"
 
     parameters = {
-        'reg': [1e-1, 1e-2, 1e-3],
+        'reg': [5*1e-1, 1e-1, 5*1e-2, 1e-2],
     }
 
     min_benchopt_version = "1.3"
@@ -26,9 +26,12 @@ class Objective(BaseObjective):
 
     def compute(self, w):
         s, X = self.s, self.X
+        n_samples = X.shape[0]
 
         Xw = X @ w
         minus_log_lik = -(s @ Xw) + s @ np.log(self.B @ np.exp(Xw))
+        minus_log_lik /= n_samples
+
         penalty_val = self.alpha * norm(w, ord=1)
 
         return dict(
