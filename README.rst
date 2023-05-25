@@ -1,27 +1,14 @@
-Template for Benchopt Benchmark repositories
-=============================================
-|Build Template|
-
-This repo should be used with the following steps:
-
-1. Hit the `Use this template` button on the top of `this page <https://github.com/benchopt/template_benchmark>`_,
-2. Use the form to create a new github repository with your benchmark name,
-3. Clone the newly created repository on your computer,
-4. Run ``python clean_template.py`` script that will remove instruction relative to
-   the template in ``README.rst`` and update it with your repo and org name.
-5. Edit the problem description in the ``README.rst``.
-6. Update ``objective.py`` and the files in ``datasets`` and ``solvers`` to create the benchmark.
-
-My Benchopt Benchmark
-=====================
+Benchmark for L1-Cox estimation
+===============================
 |Build Status| |Python 3.6+|
 
-Benchopt is a package to simplify and make more transparent and
-reproducible the comparisons of optimization algorithms.
-This benchmark is dedicated to solver of **describe your problem**:
+
+This benchmark is dedicated to solver of **L1-Cox estimation**:
 
 
-$$\\min_{w} f(X, w)$$
+$$
+\min_{w} \sum_{i=1}^{n} -s_i \langle x_i, \beta \rangle + \log(\textstyle\sum_{y_j \geq y_i} e^{\langle x_j, \beta \rangle}) + \lambda \lVert w \rVert_1
+$$
 
 
 where $n$ (or ``n_samples``) stands for the number of samples, $p$ (or ``n_features``) stands for the number of features and
