@@ -1,3 +1,4 @@
+import warnings
 from benchopt import BaseSolver, safe_import_context
 
 with safe_import_context() as import_ctx:
@@ -21,10 +22,12 @@ class Solver(BaseSolver):
         self.tm, self.s, self.X = tm, s, X
 
         # fit ProxNewton
-        self.datafit = compiled_clone(Cox())
+        self.datafit = compiled_clone(Cox(use_efron=True))
         self.penalty = compiled_clone(L1(alpha))
 
         self.datafit.initialize(X, (tm, s))
+
+        warnings.filterwarnings('ignore')
         self.solver = ProxNewton(fit_intercept=False, tol=1e-9)
 
         # cache numba compilation
