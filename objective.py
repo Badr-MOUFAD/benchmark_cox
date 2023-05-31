@@ -4,6 +4,10 @@ with safe_import_context() as import_ctx:
     import numpy as np
     from numpy.linalg import norm
 
+    from skglm.datafits import Cox
+    from skglm.penalties import L1
+    from skglm.utils.jit_compilation import compiled_clone
+
 
 class Objective(BaseObjective):
 
@@ -13,46 +17,49 @@ class Objective(BaseObjective):
         'reg': [1e-1, 1e-2],
     }
 
+    requirements = [
+        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+    ]
+
     min_benchopt_version = "1.3"
 
     def __init__(self, reg):
         self.reg = reg
 
-    def set_data(self, tm, s, X):
-        self.tm, self.s, self.X = tm, s, X
-
-        self.B = (tm >= tm[:, None]).astype(float)
-        self.alpha = self.reg * Objective._compute_alpha_max(tm, s, X)
-
-    def compute(self, w):
-        s, X = self.s, self.X
+    def set_data(self, tm, s, X, use_efron):
         n_samples = X.shape[0]
 
-        Xw = X @ w
-        minus_log_lik = -(s @ Xw) + s @ np.log(self.B @ np.exp(Xw))
-        minus_log_lik /= n_samples
+        self.X = X
+        self.y = (tm, s)
+        self.use_efron = use_efron
 
-        penalty_val = self.alpha * norm(w, ord=1)
+        # init penalty
+        self.datafit = compiled_clone(Cox(self.use_efron))
+        self.datafit.initialize(self.X, self.y)
+
+        # init alpha
+        grad_0 = self.datafit.raw_grad(self.y, np.zeros(n_samples))
+        self.alpha = self.reg * norm(X.T @ grad_0, ord=np.inf)
+
+        # init penalty
+        self.penalty = compiled_clone(L1(self.alpha))
+
+    def compute(self, w):
+        Xw = self.X @ w
+        y = self.y
+
+        datafit_val = self.datafit.value(y, w, Xw)
+        penalty_val = self.penalty.value(w)
 
         return dict(
-            value=minus_log_lik + penalty_val,
+            value=datafit_val + penalty_val,
             support_size=(w != 0).sum(),
         )
 
-    def get_one_solution(self):
-        return np.zeros(self.X.shape[1])
-
-    @staticmethod
-    def _compute_alpha_max(tm, s, X):
-        n_samples = X.shape[0]
-
-        B = (tm >= tm[:, None]).astype(X.dtype)
-        grad_0 = -s + B.T @ (s / np.sum(B, axis=1))
-
-        return norm(X.T @ grad_0, ord=np.inf) / n_samples
-
     def get_objective(self):
+        tm, s = self.y
 
         return dict(
-            tm=self.tm, s=self.s, X=self.X, alpha=self.alpha,
+            tm=tm, s=s, X=self.X, alpha=self.alpha,
+            use_efron=self.use_efron
         )

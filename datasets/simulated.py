@@ -14,8 +14,8 @@ class Dataset(BaseDataset):
 
     parameters = {
         'n_samples, n_features': [
-            (200, 100), (500, 300),
-            (1000, 300), (1000, 500),
+            (200, 100),  (500, 300),
+            # (1000, 300), (1000, 500),
         ],
         'normalize': [True],
         'with_ties': [True, False],
@@ -34,4 +34,4 @@ class Dataset(BaseDataset):
             self.n_samples, self.n_features, self.normalize,
             random_state=self.random_state, with_ties=self.with_ties)
 
-        return dict(tm=tm, s=s, X=X)
+        return dict(tm=tm, s=s, X=X, use_efron=self.with_ties)

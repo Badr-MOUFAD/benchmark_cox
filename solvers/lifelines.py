@@ -21,7 +21,7 @@ class Solver(BaseSolver):
         patience=10, strategy="iteration",
     )
 
-    def set_objective(self, tm, s, X, alpha):
+    def set_objective(self, tm, s, X, alpha, use_efron):
         # format data
         stacked_tm_s_X = np.hstack((tm[:, None], s[:, None], X))
         self.df = pd.DataFrame(stacked_tm_s_X)

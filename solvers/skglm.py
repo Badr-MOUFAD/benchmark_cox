@@ -18,11 +18,11 @@ class Solver(BaseSolver):
 
     stopping_strategy = 'iteration'
 
-    def set_objective(self, tm, s, X, alpha):
+    def set_objective(self, tm, s, X, alpha, use_efron):
         self.tm, self.s, self.X = tm, s, X
 
         # fit ProxNewton
-        self.datafit = compiled_clone(Cox(use_efron=True))
+        self.datafit = compiled_clone(Cox(use_efron))
         self.penalty = compiled_clone(L1(alpha))
 
         self.datafit.initialize(X, (tm, s))
