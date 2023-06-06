@@ -13,7 +13,7 @@ $$
 where $n$ (or ``n_samples``) stands for the number of samples, $p$ (or ``n_features``) stands for the number of features, $s$ the vector of observation censorship, $y$ occurrences times.
 
 
-$$X \\in \\mathbb{R}^{n \\times p} \\ , \\, s \in \\{ , 1 \\}^n, \\ , y \\in \\mathbb{R}^n, \\quad w \\in \\mathbb{R}^p$$
+$$X \\in \\mathbb{R}^{n \\times p} \\ , \\, s \\in \\{ , 1 \\}^n, \\ , y \\in \\mathbb{R}^n, \\quad w \\in \\mathbb{R}^p$$
 
 
 In the case of tied data, data with observation having the same occurrences time, the objective reads
