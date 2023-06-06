@@ -25,7 +25,7 @@ class Objective(BaseObjective):
 
     min_benchopt_version = "1.3"
 
-    def __init__(self, reg):
+    def __init__(self, reg=0.5):
         self.reg = reg
 
     def set_data(self, tm, s, X, use_efron):
