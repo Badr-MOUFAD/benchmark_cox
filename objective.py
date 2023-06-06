@@ -17,8 +17,10 @@ class Objective(BaseObjective):
         'reg': [1e-1, 1e-2],
     }
 
+    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
+    # after merging skglm PR 159
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
+        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
     ]
 
     min_benchopt_version = "1.3"

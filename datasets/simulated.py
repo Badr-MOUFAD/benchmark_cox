@@ -8,6 +8,8 @@ class Dataset(BaseDataset):
 
     name = "Simulated"
 
+    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
+    # after merging skglm PR 159
     requirements = [
         "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
     ]
