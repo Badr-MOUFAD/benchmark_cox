@@ -13,7 +13,7 @@ class Solver(BaseSolver):
     name = 'skglm'
 
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
     ]
 
     stopping_strategy = 'iteration'

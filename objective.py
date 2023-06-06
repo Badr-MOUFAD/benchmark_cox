@@ -18,7 +18,7 @@ class Objective(BaseObjective):
     }
 
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
     ]
 
     min_benchopt_version = "1.3"
