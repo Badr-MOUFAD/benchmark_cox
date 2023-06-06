@@ -21,7 +21,7 @@ In the case of tied data, data with observation having the same occurrences time
 $$
 \\min_{w} \\sum_{l=1}^{m} \\bigg(
 \\sum_{i \\in H_{i_l}} - \\langle x_i, \\beta \\rangle 
-+ \\log \\Bigl(\\textstyle \\sum_{y_j \\geq y_{i_l}} e^{\\langle x_j, \\beta \\rangle} - \\frac{\#(i) - 1}{\\lvert H_{i_l} \rvert}\\textstyle\\sum_{j \\in H_{i_l}} e^{\\langle x_j, \\beta \\rangle}\\Bigl)
++ \\log \\Bigl(\\textstyle \\sum_{y_j \\geq y_{i_l}} e^{\\langle x_j, \\beta \\rangle} - \\frac{\\#(i) - 1}{\\lvert H_{i_l} \\rvert}\\textstyle\\sum_{j \\in H_{i_l}} e^{\\langle x_j, \\beta \\rangle}\\Bigl)
 \\bigg)
 $$
 
