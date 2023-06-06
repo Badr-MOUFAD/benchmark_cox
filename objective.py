@@ -65,3 +65,7 @@ class Objective(BaseObjective):
             tm=tm, s=s, X=self.X, alpha=self.alpha,
             use_efron=self.use_efron
         )
+
+    def get_one_solution(self):
+        n_features = self.X.shape[1]
+        return np.zeros(n_features)
