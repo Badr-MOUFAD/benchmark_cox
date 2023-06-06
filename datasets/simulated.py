@@ -9,7 +9,7 @@ class Dataset(BaseDataset):
     name = "Simulated"
 
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
     ]
 
     parameters = {
