@@ -17,13 +17,15 @@ class Objective(BaseObjective):
         'reg': [1e-1, 1e-2],
     }
 
+    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
+    # after merging skglm PR 159
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
     ]
 
     min_benchopt_version = "1.3"
 
-    def __init__(self, reg):
+    def __init__(self, reg=0.5):
         self.reg = reg
 
     def set_data(self, tm, s, X, use_efron):
@@ -63,3 +65,7 @@ class Objective(BaseObjective):
             tm=tm, s=s, X=self.X, alpha=self.alpha,
             use_efron=self.use_efron
         )
+
+    def get_one_solution(self):
+        n_features = self.X.shape[1]
+        return np.zeros(n_features)

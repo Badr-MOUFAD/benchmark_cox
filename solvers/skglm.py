@@ -12,8 +12,10 @@ class Solver(BaseSolver):
 
     name = 'skglm'
 
+    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
+    # after merging skglm PR 159
     requirements = [
-        "git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
     ]
 
     stopping_strategy = 'iteration'
