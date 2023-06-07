@@ -7,7 +7,7 @@ This benchmark is dedicated to solver of **L1-Cox estimation**:
 
 
 $$
-\\min_{w} \\sum_{i=1}^{n} -s_i \\langle x_i, \\beta \\rangle + \\log(\\textstyle\\sum_{y_j \\geq y_i} e^{\\langle x_j, \\beta \\rangle}) + \\lambda \\lVert w \\rVert_1
+\\min_{w} \\sum_{i=1}^{n} -s_i \\langle x_i, w \\rangle + \\log(\\textstyle\\sum_{y_j \\geq y_i} e^{\\langle x_j, w \\rangle}) + \\lambda \\lVert w \\rVert_1
 $$
 
 where $n$ (or ``n_samples``) stands for the number of samples, $p$ (or ``n_features``) stands for the number of features, $s$ the vector of observation censorship, $y$ occurrences times.
@@ -20,8 +20,8 @@ In the case of tied data, data with observation having the same occurrences time
 
 $$
 \\min_{w} \\sum_{l=1}^{m} \\bigg(
-\\sum_{i \\in H_{i_l}} - \\langle x_i, \\beta \\rangle 
-+ \\log \\Bigl(\\textstyle \\sum_{y_j \\geq y_{i_l}} e^{\\langle x_j, \\beta \\rangle} - \\frac{\\#(i) - 1}{\\lvert H_{i_l} \\rvert}\\textstyle\\sum_{j \\in H_{i_l}} e^{\\langle x_j, \\beta \\rangle}\\Bigl)
+\\sum_{i \\in H_{i_l}} - \\langle x_i, w \\rangle 
++ \\log \\Bigl(\\textstyle \\sum_{y_j \\geq y_{i_l}} e^{\\langle x_j, w \\rangle} - \\frac{\\#(i) - 1}{\\lvert H_{i_l} \\rvert}\\textstyle\\sum_{j \\in H_{i_l}} e^{\\langle x_j, w \\rangle}\\Bigl)
 \\bigg)
 $$
 
