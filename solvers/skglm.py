@@ -3,7 +3,7 @@ from benchopt import BaseSolver, safe_import_context
 
 with safe_import_context() as import_ctx:
     from skglm.datafits import Cox
-    from skglm.penalties import L1
+    from skglm.penalties import L1_plus_L2
     from skglm.solvers import ProxNewton
     from skglm.utils.jit_compilation import compiled_clone
 
@@ -25,7 +25,7 @@ class Solver(BaseSolver):
 
         # fit ProxNewton
         self.datafit = compiled_clone(Cox(use_efron))
-        self.penalty = compiled_clone(L1(alpha))
+        self.penalty = compiled_clone(L1_plus_L2(alpha, l1_ratio=0.))
 
         self.datafit.initialize(X, (tm, s))
 

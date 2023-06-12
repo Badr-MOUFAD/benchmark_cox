@@ -5,13 +5,13 @@ with safe_import_context() as import_ctx:
     from numpy.linalg import norm
 
     from skglm.datafits import Cox
-    from skglm.penalties import L1
+    from skglm.penalties import L1_plus_L2
     from skglm.utils.jit_compilation import compiled_clone
 
 
 class Objective(BaseObjective):
 
-    name = "L1 Cox Estimation"
+    name = "L2 Cox Estimation"
 
     parameters = {
         'reg': [1e-1, 1e-2],
@@ -20,7 +20,7 @@ class Objective(BaseObjective):
     # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
     # after merging skglm PR 159
     requirements = [
-        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
+        "pip:git+https://github.com/scikit-learn-contrib/skglm.git@main",
     ]
 
     min_benchopt_version = "1.3"
@@ -44,7 +44,7 @@ class Objective(BaseObjective):
         self.alpha = self.reg * norm(X.T @ grad_0, ord=np.inf)
 
         # init penalty
-        self.penalty = compiled_clone(L1(self.alpha))
+        self.penalty = compiled_clone(L1_plus_L2(self.alpha, l1_ratio=0.))
 
     def compute(self, w):
         Xw = self.X @ w

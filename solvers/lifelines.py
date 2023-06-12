@@ -27,7 +27,7 @@ class Solver(BaseSolver):
         self.df = pd.DataFrame(stacked_tm_s_X)
 
         warnings.filterwarnings('ignore')
-        self.estimator = CoxPHFitter(penalizer=alpha, l1_ratio=1.)
+        self.estimator = CoxPHFitter(penalizer=alpha, l1_ratio=0.)
 
     def run(self, n_iter):
         self.estimator.fit(
