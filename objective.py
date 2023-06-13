@@ -64,7 +64,8 @@ class Objective(BaseObjective):
         tm, s = self.y
 
         return dict(
-            tm=tm, s=s, X=self.X, alpha=self.alpha,
+            tm=tm, s=s, X=self.X,
+            alpha=self.alpha, l1_ratio=self.l1_ratio,
             use_efron=self.use_efron
         )
 
