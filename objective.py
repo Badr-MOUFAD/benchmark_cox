@@ -11,17 +11,15 @@ with safe_import_context() as import_ctx:
 
 class Objective(BaseObjective):
 
-    name = "L1 Cox Estimation"
+    name = "Cox Estimation"
 
     parameters = {
         'reg': [1e-1, 1e-2],
         'l1_ratio': [1.]
     }
 
-    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
-    # after merging skglm PR 159
     requirements = [
-        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
+        "pip:git+https://github.com/scikit-learn-contrib/skglm.git@main",
     ]
 
     min_benchopt_version = "1.3"
