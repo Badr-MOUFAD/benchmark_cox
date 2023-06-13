@@ -14,7 +14,7 @@ class Dataset(BaseDataset):
 
     parameters = {
         'n_samples, n_features': [
-            (100, 10),  # (500, 300), (1000, 500)
+            (200, 100), (500, 300), (1000, 500)
         ],
         'normalize': [True],
         'with_ties': [True, False],
