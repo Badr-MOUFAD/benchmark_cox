@@ -13,7 +13,7 @@ class Solver(BaseSolver):
     name = 'skglm'
 
     parameters = {
-        "solver": ["Prox-Newton", 'L-BFGS']
+        "solver": ["Prox-Newton", "L-BFGS"]
     }
 
     requirements = [
@@ -27,7 +27,7 @@ class Solver(BaseSolver):
         self.l1_ratio = l1_ratio
 
         warnings.filterwarnings('ignore')
-        if self.solver == "Proximal-Newton":
+        if self.solver == "Prox-Newton":
             # fit ProxNewton
             self.datafit = compiled_clone(Cox(use_efron))
             self.penalty = compiled_clone(L1_plus_L2(alpha, l1_ratio))
@@ -42,6 +42,11 @@ class Solver(BaseSolver):
             self.datafit.initialize(X, (tm, s))
 
             self.solver = LBFGS(tol=1e-9)
+        else:
+            raise ValueError(
+                f"Solver Parameter `{self.solver}` is not "
+                f" supported in {self.name}"
+            )
 
         # cache numba compilation
         self.run(4)

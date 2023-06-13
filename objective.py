@@ -15,7 +15,7 @@ class Objective(BaseObjective):
 
     parameters = {
         'reg': [1e-1, 1e-2],
-        'l1_ratio': [1.]
+        'l1_ratio': [1., 0.7, 0.]
     }
 
     requirements = [
@@ -30,6 +30,7 @@ class Objective(BaseObjective):
 
     def set_data(self, tm, s, X, use_efron):
         n_samples = X.shape[0]
+        reg, l1_ratio = self.reg, self.l1_ratio
 
         self.X = X
         self.y = (tm, s)
@@ -41,7 +42,11 @@ class Objective(BaseObjective):
 
         # init alpha
         grad_0 = self.datafit.raw_grad(self.y, np.zeros(n_samples))
-        self.alpha = self.l1_ratio * self.reg * norm(X.T @ grad_0, ord=np.inf)
+
+        if l1_ratio != 0:
+            self.alpha = reg * norm(X.T @ grad_0, ord=np.inf) / l1_ratio
+        else:
+            self.alpha = reg * norm(X.T @ grad_0, ord=np.inf)
 
         # init penalty
         self.penalty = compiled_clone(L1_plus_L2(self.alpha, self.l1_ratio))
