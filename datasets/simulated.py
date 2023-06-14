@@ -8,15 +8,13 @@ class Dataset(BaseDataset):
 
     name = "Simulated"
 
-    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
-    # after merging skglm PR 159
     requirements = [
-        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-estimator",
+        "pip:git+https://github.com/scikit-learn-contrib/skglm.git@main",
     ]
 
     parameters = {
         'n_samples, n_features': [
-            (200, 100),  (500, 300),
+            (200, 100), (500, 300), (1000, 500)
         ],
         'normalize': [True],
         'with_ties': [True, False],

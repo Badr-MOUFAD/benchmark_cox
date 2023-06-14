@@ -5,31 +5,32 @@ with safe_import_context() as import_ctx:
     from numpy.linalg import norm
 
     from skglm.datafits import Cox
-    from skglm.penalties import L1
+    from skglm.penalties import L1_plus_L2
     from skglm.utils.jit_compilation import compiled_clone
 
 
 class Objective(BaseObjective):
 
-    name = "L1 Cox Estimation"
+    name = "Cox Estimation"
 
     parameters = {
         'reg': [1e-1, 1e-2],
+        'l1_ratio': [1., 0.7, 0.]
     }
 
-    # TODO: replace `pip:git+https://github.com/Badr-MOUFAD/skglm.git`
-    # after merging skglm PR 159
     requirements = [
-        "pip:git+https://github.com/Badr-MOUFAD/skglm.git@cox-efron",
+        "pip:git+https://github.com/scikit-learn-contrib/skglm.git@main",
     ]
 
     min_benchopt_version = "1.3"
 
-    def __init__(self, reg=0.5):
+    def __init__(self, reg=0.5, l1_ratio=1.):
         self.reg = reg
+        self.l1_ratio = l1_ratio
 
     def set_data(self, tm, s, X, use_efron):
         n_samples = X.shape[0]
+        reg, l1_ratio = self.reg, self.l1_ratio
 
         self.X = X
         self.y = (tm, s)
@@ -41,10 +42,14 @@ class Objective(BaseObjective):
 
         # init alpha
         grad_0 = self.datafit.raw_grad(self.y, np.zeros(n_samples))
-        self.alpha = self.reg * norm(X.T @ grad_0, ord=np.inf)
+
+        if l1_ratio != 0:
+            self.alpha = reg * norm(X.T @ grad_0, ord=np.inf) / l1_ratio
+        else:
+            self.alpha = reg * norm(X.T @ grad_0, ord=np.inf)
 
         # init penalty
-        self.penalty = compiled_clone(L1(self.alpha))
+        self.penalty = compiled_clone(L1_plus_L2(self.alpha, self.l1_ratio))
 
     def compute(self, w):
         Xw = self.X @ w
@@ -62,7 +67,8 @@ class Objective(BaseObjective):
         tm, s = self.y
 
         return dict(
-            tm=tm, s=s, X=self.X, alpha=self.alpha,
+            tm=tm, s=s, X=self.X,
+            alpha=self.alpha, l1_ratio=self.l1_ratio,
             use_efron=self.use_efron
         )
 
