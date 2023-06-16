@@ -2,7 +2,7 @@ import warnings
 from benchopt import BaseSolver, safe_import_context
 
 with safe_import_context() as import_ctx:
-    from skglm.datafits import Cox
+    from skglm.datafits.single_task import FastCox
     from skglm.penalties import L1_plus_L2, L2
     from skglm.solvers import ProxNewton, LBFGS
     from skglm.utils.jit_compilation import compiled_clone
@@ -10,7 +10,7 @@ with safe_import_context() as import_ctx:
 
 class Solver(BaseSolver):
 
-    name = 'cox-main'
+    name = 'cox-enhanced'
 
     parameters = {
         "solver": ["Prox-Newton", "L-BFGS"],
@@ -29,14 +29,14 @@ class Solver(BaseSolver):
         warnings.filterwarnings('ignore')
         if self.solver == "Prox-Newton":
             # fit ProxNewton
-            self.datafit = compiled_clone(Cox(use_efron))
+            self.datafit = compiled_clone(FastCox(use_efron))
             self.penalty = compiled_clone(L1_plus_L2(alpha, l1_ratio))
 
             self.datafit.initialize(X, (tm, s))
             self.solver = ProxNewton(fit_intercept=False, tol=1e-9)
         elif self.solver == "L-BFGS":
             # L-BFGS
-            self.datafit = compiled_clone(Cox(use_efron))
+            self.datafit = compiled_clone(FastCox(use_efron))
             self.penalty = compiled_clone(L2(alpha))
 
             self.datafit.initialize(X, (tm, s))
