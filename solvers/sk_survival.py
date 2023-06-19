@@ -1,5 +1,6 @@
 import warnings
 from benchopt import BaseSolver, safe_import_context
+from benchopt.stopping_criterion import SufficientProgressCriterion
 
 with safe_import_context() as import_ctx:
     import numpy as np
@@ -22,6 +23,10 @@ class Solver(BaseSolver):
     ]
 
     stopping_strategy = 'iteration'
+
+    stopping_criterion = SufficientProgressCriterion(
+        patience=10, strategy="iteration",
+    )
 
     def set_objective(self, tm, s, X, alpha, l1_ratio, use_efron):
         self.tm, self.s, self.X = tm, s, X
@@ -56,7 +61,10 @@ class Solver(BaseSolver):
             self.w = np.zeros(self.X.shape[1])
             return
 
-        self.estimator.max_iter = n_iter
+        if isinstance(self.estimator, CoxnetSurvivalAnalysis):
+            self.estimator.max_iter = n_iter
+        else:
+            self.estimator.n_iter = n_iter
 
         self.estimator.fit(self.X, self.y)
         self.w = self.estimator.coef_
@@ -75,4 +83,4 @@ class Solver(BaseSolver):
     @staticmethod
     def get_next(previous):
         "Linear growth for n_iter."
-        return previous + 50
+        return previous + 10
