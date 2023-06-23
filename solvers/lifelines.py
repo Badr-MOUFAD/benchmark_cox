@@ -21,10 +21,10 @@ class Solver(BaseSolver):
         patience=10, strategy="iteration",
     )
 
-    def set_objective(self, tm, s, X, alpha, l1_ratio, use_efron):
+    def set_objective(self, X, y, alpha, l1_ratio, use_efron):
         # format data
-        stacked_tm_s_X = np.hstack((tm[:, None], s[:, None], X))
-        self.df = pd.DataFrame(stacked_tm_s_X)
+        stacked_y_X = np.hstack((y, X))
+        self.df = pd.DataFrame(stacked_y_X)
 
         warnings.filterwarnings('ignore')
         self.estimator = CoxPHFitter(penalizer=alpha, l1_ratio=l1_ratio)

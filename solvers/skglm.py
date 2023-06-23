@@ -22,8 +22,8 @@ class Solver(BaseSolver):
 
     stopping_strategy = 'iteration'
 
-    def set_objective(self, tm, s, X, alpha, l1_ratio, use_efron):
-        self.tm, self.s, self.X = tm, s, X
+    def set_objective(self, X, y, alpha, l1_ratio, use_efron):
+        self.X, self.y = X, y
         self.l1_ratio = l1_ratio
 
         warnings.filterwarnings('ignore')
@@ -32,14 +32,14 @@ class Solver(BaseSolver):
             self.datafit = compiled_clone(Cox(use_efron))
             self.penalty = compiled_clone(L1_plus_L2(alpha, l1_ratio))
 
-            self.datafit.initialize(X, (tm, s))
+            self.datafit.initialize(X, y)
             self.solver = ProxNewton(fit_intercept=False, tol=1e-9)
         elif self.solver == "L-BFGS":
             # L-BFGS
             self.datafit = compiled_clone(Cox(use_efron))
             self.penalty = compiled_clone(L2(alpha))
 
-            self.datafit.initialize(X, (tm, s))
+            self.datafit.initialize(X, y)
 
             self.solver = LBFGS(tol=1e-9)
         else:
@@ -55,14 +55,14 @@ class Solver(BaseSolver):
         self.solver.max_iter = n_iter
 
         w, *_ = self.solver.solve(
-            self.X, (self.tm, self.s), self.datafit, self.penalty
+            self.X, self.y, self.datafit, self.penalty
         )
         self.w = w
 
     def get_result(self):
         return self.w
 
-    def skip(self, tm, s, X, alpha, l1_ratio, use_efron):
+    def skip(self, X, y, alpha, l1_ratio, use_efron):
         if alpha == 0. and self.solver == "Prox-Newton":
             reason = (f"{self.name}:{self.solver} does not handle"
                       " unpenalized Cox estimation.")

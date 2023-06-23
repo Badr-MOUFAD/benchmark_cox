@@ -28,13 +28,14 @@ class Solver(BaseSolver):
         patience=10, strategy="iteration",
     )
 
-    def set_objective(self, tm, s, X, alpha, l1_ratio, use_efron):
-        self.tm, self.s, self.X = tm, s, X
+    def set_objective(self, X, y, alpha, l1_ratio, use_efron):
+        self.X, self.y = X, y
         self.l1_ratio = l1_ratio
         n_samples = X.shape[0]
 
         # cast data
         dtype = np.dtype([('fstat', bool), ('lenfol', '<f8')])
+        tm, s = y[:, 0], y[:, 1]
         self.y = np.array(list(
             zip(s, tm)
         ), dtype)
@@ -72,7 +73,7 @@ class Solver(BaseSolver):
     def get_result(self):
         return self.w.flatten()
 
-    def skip(self, tm, s, X, alpha, l1_ratio, use_efron):
+    def skip(self, X, y, alpha, l1_ratio, use_efron):
         if l1_ratio != 0 and use_efron:
             reason = (f"{self.name} does not handle tied data"
                       " for Elastic Cox estimation.")
