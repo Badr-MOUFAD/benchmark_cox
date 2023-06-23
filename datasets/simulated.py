@@ -29,8 +29,8 @@ class Dataset(BaseDataset):
         self.with_ties = with_ties
 
     def get_data(self):
-        tm, s, X = make_dummy_survival_data(
+        X, y = make_dummy_survival_data(
             self.n_samples, self.n_features, self.normalize,
             random_state=self.random_state, with_ties=self.with_ties)
 
-        return dict(tm=tm, s=s, X=X, use_efron=self.with_ties)
+        return dict(X=X, y=y, use_efron=self.with_ties)
