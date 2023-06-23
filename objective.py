@@ -28,12 +28,11 @@ class Objective(BaseObjective):
         self.reg = reg
         self.l1_ratio = l1_ratio
 
-    def set_data(self, tm, s, X, use_efron):
+    def set_data(self, X, y, use_efron):
         n_samples = X.shape[0]
         reg, l1_ratio = self.reg, self.l1_ratio
 
-        self.X = X
-        self.y = (tm, s)
+        self.X, self.y = X, y
         self.use_efron = use_efron
 
         # init penalty
@@ -64,10 +63,8 @@ class Objective(BaseObjective):
         )
 
     def get_objective(self):
-        tm, s = self.y
-
         return dict(
-            tm=tm, s=s, X=self.X,
+            X=self.X, y=self.y,
             alpha=self.alpha, l1_ratio=self.l1_ratio,
             use_efron=self.use_efron
         )
