@@ -1,6 +1,7 @@
 solver:
   - skglm
   - lifelines
+  - scikit-survival
 
 dataset:
   - Simulated
@@ -8,4 +9,4 @@ dataset:
 timeout: 120
 max-runs: 1000
 n-repetitions: 1
-n-jobs: 18
+n-jobs: 2
