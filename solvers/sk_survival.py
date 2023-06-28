@@ -81,7 +81,6 @@ class Solver(BaseSolver):
 
         return False, None
 
-    @staticmethod
-    def get_next(previous):
+    def get_next(self, previous):
         "Linear growth for n_iter."
         return previous + 10
