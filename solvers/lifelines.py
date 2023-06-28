@@ -44,7 +44,6 @@ class Solver(BaseSolver):
     def get_result(self):
         return self.w
 
-    @staticmethod
-    def get_next(previous):
+    def get_next(self, previous):
         "Linear growth for n_iter."
         return previous + 10
