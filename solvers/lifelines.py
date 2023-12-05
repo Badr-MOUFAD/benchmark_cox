@@ -42,7 +42,7 @@ class Solver(BaseSolver):
         self.w = self.estimator.params_.values
 
     def get_result(self):
-        return self.w
+        return dict(w=self.w)
 
     def get_next(self, previous):
         "Linear growth for n_iter."
