@@ -22,7 +22,7 @@ class Objective(BaseObjective):
         "pip:git+https://github.com/scikit-learn-contrib/skglm.git@main",
     ]
 
-    min_benchopt_version = "1.3"
+    min_benchopt_version = "1.5"
 
     def __init__(self, reg=0.5, l1_ratio=1.):
         self.reg = reg
@@ -50,7 +50,7 @@ class Objective(BaseObjective):
         # init penalty
         self.penalty = compiled_clone(L1_plus_L2(self.alpha, self.l1_ratio))
 
-    def compute(self, w):
+    def evaluate_result(self, w):
         Xw = self.X @ w
         y = self.y
 
@@ -69,6 +69,6 @@ class Objective(BaseObjective):
             use_efron=self.use_efron
         )
 
-    def get_one_solution(self):
+    def get_one_result(self):
         n_features = self.X.shape[1]
-        return np.zeros(n_features)
+        return dict(w=np.zeros(n_features))

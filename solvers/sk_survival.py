@@ -4,8 +4,9 @@ from benchopt.stopping_criterion import SufficientProgressCriterion
 
 with safe_import_context() as import_ctx:
     import numpy as np
-    from sksurv.linear_model import (CoxnetSurvivalAnalysis,
-                                     CoxPHSurvivalAnalysis)
+    from sksurv.linear_model import (
+        CoxnetSurvivalAnalysis, CoxPHSurvivalAnalysis
+    )
 
 
 class Solver(BaseSolver):
@@ -71,7 +72,7 @@ class Solver(BaseSolver):
         self.w = self.estimator.coef_
 
     def get_result(self):
-        return self.w.flatten()
+        return dict(w=self.w.flatten())
 
     def skip(self, X, y, alpha, l1_ratio, use_efron):
         if l1_ratio != 0 and use_efron:
